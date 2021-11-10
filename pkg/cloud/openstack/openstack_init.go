@@ -1,9 +1,9 @@
 package openstackinit
 
 import (
-	"github.com/Chathuru/kubernetes-cluster-autoscaler/pkg/common/datastructures"
-	"github.com/rackspace/gophercloud"
-	"github.com/rackspace/gophercloud/openstack"
+	"kubernetes-cluster-autoscaler/pkg/common/datastructures"
+	"github.com/gophercloud/gophercloud"
+	"github.com/gophercloud/gophercloud/openstack"
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"log"
@@ -139,13 +139,19 @@ func GetOpenstackToken() *gophercloud.ServiceClient {
 		TenantID:         TenantID,
 		DomainName:       DomainName,
 	}
-
+  // opts, err := openstack.AuthOptionsFromEnv()
+	// if err != nil {
+	// 	panic(err)
+	// }
+	log.Printf("aaaa%s",opts)
 	provider, err := openstack.AuthenticatedClient(opts)
 	if err != nil {
+		log.Printf("ciap")
 		panic(err)
 	}
-	client, err := openstack.NewComputeV2(provider, gophercloud.EndpointOpts{Region: "LK"})
+	client, err := openstack.NewComputeV2(provider, gophercloud.EndpointOpts{Region: "Cesena"})
 	if err != nil {
+		log.Printf("ciaddp")
 		panic(err)
 	}
 

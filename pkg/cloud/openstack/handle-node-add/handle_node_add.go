@@ -2,9 +2,11 @@ package handlenodeadd
 
 import (
 	"context"
-	"github.com/Chathuru/kubernetes-cluster-autoscaler/pkg/cloud/openstack"
-	"github.com/Chathuru/kubernetes-cluster-autoscaler/pkg/common/datastructures"
-	"github.com/rackspace/gophercloud/openstack/compute/v2/servers"
+	"kubernetes-cluster-autoscaler/pkg/cloud/openstack"
+	"kubernetes-cluster-autoscaler/pkg/common/datastructures"
+	"github.com/gophercloud/gophercloud/openstack/compute/v2/servers"
+	"github.com/gophercloud/utils/openstack/compute/v2/flavors"
+	"github.com/gophercloud/utils/openstack/imageservice/v2/images"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
@@ -152,10 +154,19 @@ func TriggerAddNode(flavorName string) {
 	defer PanicRecovery()
 	client := openstackinit.GetOpenstackToken()
 
+	flavorID, err := flavors.IDFromName(client, flavorName)
+	if err != nil {
+		panic(err)
+	}
+	imageID, err := images.IDFromName(client,openstackinit.ImageName)
+	if err != nil {
+		panic(err)
+	}
+
 	serverCreatOpts := servers.CreateOpts{
 		Name:           GetNodeName(),
-		FlavorName:     flavorName,
-		ImageName:      openstackinit.ImageName,
+		FlavorRef:     flavorID,
+		ImageRef:      imageID,
 		SecurityGroups: []string{openstackinit.SecurityGroupName},
 		Networks:       []servers.Network{{UUID: openstackinit.NetworkUUID}},
 	}

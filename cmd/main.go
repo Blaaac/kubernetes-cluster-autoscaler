@@ -3,11 +3,11 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"github.com/Chathuru/kubernetes-cluster-autoscaler/pkg/cloud/openstack"
-	"github.com/Chathuru/kubernetes-cluster-autoscaler/pkg/cloud/openstack/handel-node-delete"
-	"github.com/Chathuru/kubernetes-cluster-autoscaler/pkg/cloud/openstack/handle-node-add"
-	"github.com/Chathuru/kubernetes-cluster-autoscaler/pkg/common/datastructures"
-	"github.com/Chathuru/kubernetes-cluster-autoscaler/pkg/common/functions"
+	"kubernetes-cluster-autoscaler/pkg/cloud/openstack"
+	"kubernetes-cluster-autoscaler/pkg/cloud/openstack/handel-node-delete"
+	"kubernetes-cluster-autoscaler/pkg/cloud/openstack/handle-node-add"
+	"kubernetes-cluster-autoscaler/pkg/common/datastructures"
+	"kubernetes-cluster-autoscaler/pkg/common/functions"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/watch"
@@ -66,8 +66,8 @@ func main() {
 
 	defer w.Stop()
 	wg.Add(1)
-
 	log.Println("[INFO] K8s cluster auto scalar started")
+  handlenodeadd.TriggerAddNode("m1.small")
 	for {
 		wCh := w.ResultChan()
 

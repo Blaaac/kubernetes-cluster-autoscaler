@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/Chathuru/kubernetes-cluster-autoscaler/pkg/common/datastructures"
+	"kubernetes-cluster-autoscaler/pkg/common/datastructures"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/aws/session"
