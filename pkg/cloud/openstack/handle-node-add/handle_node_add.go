@@ -6,6 +6,7 @@ import (
 	"kubernetes-cluster-autoscaler/pkg/common/datastructures"
 	"github.com/gophercloud/gophercloud/openstack/compute/v2/servers"
 	"github.com/gophercloud/utils/openstack/compute/v2/flavors"
+	"github.com/gophercloud/gophercloud/openstack/compute/v2/extensions/keypairs"
 	"github.com/gophercloud/utils/openstack/imageservice/v2/images"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -151,6 +152,7 @@ func GetNodeName() string {
 
 // TriggerAddNode Create new OpenStack virtual machine
 func TriggerAddNode(flavorName string) {
+	log.Printf("starting %s",flavorName)
 	defer PanicRecovery()
 	client := openstackinit.GetOpenstackToken()
 
@@ -162,20 +164,34 @@ func TriggerAddNode(flavorName string) {
 	if err != nil {
 		panic(err)
 	}
+	userData := `#cloud-config
+    runcmd:
+		 - touch /home/ubuntu/testing2
+     - touch /home/ubuntu/testing`
 
-	serverCreatOpts := servers.CreateOpts{
-		Name:           GetNodeName(),
-		FlavorRef:     flavorID,
-		ImageRef:      imageID,
-		SecurityGroups: []string{openstackinit.SecurityGroupName},
-		Networks:       []servers.Network{{UUID: openstackinit.NetworkUUID}},
-	}
+	// serverCreatOpts := servers.CreateOpts{
+	// 	Name:           GetNodeName(),
+	// 	FlavorRef:     flavorID,
+	// 	ImageRef:      imageID,
+	// 	SecurityGroups: []string{openstackinit.SecurityGroupName},
+	// 	Networks:       []servers.Network{{UUID: openstackinit.NetworkUUID}},
+	// }
 
-	server, err := servers.Create(client, serverCreatOpts).Extract()
+	server, err := servers.Create(client, keypairs.CreateOptsExt{
+		CreateOptsBuilder: servers.CreateOpts{
+			Name:           GetNodeName(),
+			FlavorRef:     flavorID,
+			ImageRef:      imageID,
+			SecurityGroups: []string{openstackinit.SecurityGroupName},
+			Networks:       []servers.Network{{UUID: openstackinit.NetworkUUID}},
+			UserData: []byte(userData),
+		},
+		KeyName: "mykey"},
+		).Extract()
 	if err != nil {
 		panic(err)
 	}
-	log.Printf("[INFO] New node added. Node ID - %s", server.ID)
+	log.Printf("[INFO] New node added. Node ID - %s, pw: %s", server.ID,server.AdminPass)
 	NewNodeStatus(server.ID)
 }
 

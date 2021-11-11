@@ -4,7 +4,7 @@ WORKDIR /root
 RUN \
   apk update && \
   apk add git build-base && \
-  git clone https://github.com/Chathuru/kubernetes-cluster-autoscaler.git && \
+  git clone https://github.com/Blaaac/kubernetes-cluster-autoscaler.git && \
   cd kubernetes-cluster-autoscaler && \
   go build -o autoscaler  cmd/main.go
 

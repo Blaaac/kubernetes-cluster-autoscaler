@@ -143,15 +143,13 @@ func GetOpenstackToken() *gophercloud.ServiceClient {
 	// if err != nil {
 	// 	panic(err)
 	// }
-	log.Printf("aaaa%s",opts)
+
 	provider, err := openstack.AuthenticatedClient(opts)
 	if err != nil {
-		log.Printf("ciap")
 		panic(err)
 	}
 	client, err := openstack.NewComputeV2(provider, gophercloud.EndpointOpts{Region: "Cesena"})
 	if err != nil {
-		log.Printf("ciaddp")
 		panic(err)
 	}
 
