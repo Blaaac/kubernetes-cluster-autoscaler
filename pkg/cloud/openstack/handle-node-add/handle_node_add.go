@@ -17,6 +17,7 @@ import (
 	"strings"
 	"sync"
 	"time"
+	"fmt"
 )
 
 var (
@@ -164,10 +165,16 @@ func TriggerAddNode(flavorName string) {
 	if err != nil {
 		panic(err)
 	}
-	userData := `#cloud-config
-    runcmd:
-		 - touch /home/ubuntu/testing2
-     - touch /home/ubuntu/testing`
+
+	userData :=`#cloud-config
+runcmd:
+- export K3S_TOKEN=%s
+- export K3S_URL=%s
+- curl -sfL https://get.k3s.io | sh -
+`
+
+
+	userData = fmt.Sprintf(userData, openstackinit.K3s_token, openstackinit.K3s_url)
 
 	// serverCreatOpts := servers.CreateOpts{
 	// 	Name:           GetNodeName(),
@@ -176,7 +183,8 @@ func TriggerAddNode(flavorName string) {
 	// 	SecurityGroups: []string{openstackinit.SecurityGroupName},
 	// 	Networks:       []servers.Network{{UUID: openstackinit.NetworkUUID}},
 	// }
-
+	// log.Printf("%s",userData)
+	// log.Printf("%s",[]byte(userData))
 	server, err := servers.Create(client, keypairs.CreateOptsExt{
 		CreateOptsBuilder: servers.CreateOpts{
 			Name:           GetNodeName(),

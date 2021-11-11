@@ -1,6 +1,8 @@
 # OpenStack, GCP, AWS, libvirt, Other
 CloudType: OpenStack
-
+#k3s conig to launch agent on new nodes
+K3s_token: 
+K3s_url:
 #  Other Supported Keys accordign to the CloudType chose.
 # AuthOptions:
 #   ProjectName: ""

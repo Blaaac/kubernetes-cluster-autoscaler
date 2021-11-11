@@ -30,6 +30,8 @@ var (
 	ClientID            string
 	AWSRegion           string
 	AuthFile            string
+	K3s_url	            string
+	K3s_token           string
 )
 
 // ConfigYaml used to decode the configuration file
@@ -43,6 +45,9 @@ type ConfigYaml struct {
 	MaxNodeCount       int               `yaml:"MaxNodeCount"`
 	OpenStackFlavours  OpenStackFlavours `yaml:"OpenStackFlavours"`
 	PassConfigToPlugin bool              `yaml:"PassConfigToPlugin"`
+	K3s_token					 string						 `yaml:"K3s_token"`
+	K3s_url					   string						 `yaml:"K3s_url"`
+
 }
 
 // AuthOptions list of credentials to authenticate cloud infrastructure
@@ -118,6 +123,9 @@ func ReadConfig() string {
 	ImageName = conf.WorkerImageName
 	SecurityGroupName = conf.Network.SecurityGroupName
 	NetworkUUID = conf.Network.NetworkUUID
+	K3s_token = conf.K3s_token
+	K3s_url = conf.K3s_url
+	
 
 	FlavorDetails := []datastructures.FlavorDetails{}
 	for _, Flavor := range conf.OpenStackFlavours.Flavours {

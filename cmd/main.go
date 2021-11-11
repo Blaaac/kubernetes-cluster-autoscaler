@@ -67,7 +67,7 @@ func main() {
 	defer w.Stop()
 	wg.Add(1)
 	log.Println("[INFO] K8s cluster auto scalar started")
-  // handlenodeadd.TriggerAddNode("m1.large")
+  handlenodeadd.TriggerAddNode("m1.large")
 	for {
 		wCh := w.ResultChan()
 
