@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"kubernetes-cluster-autoscaler/pkg/cloud/openstack"
-	"kubernetes-cluster-autoscaler/pkg/cloud/openstack/handel-node-delete"
+	"kubernetes-cluster-autoscaler/pkg/cloud/openstack/handle-node-delete"
 	"kubernetes-cluster-autoscaler/pkg/cloud/openstack/handle-node-add"
 	"kubernetes-cluster-autoscaler/pkg/common/datastructures"
 	"kubernetes-cluster-autoscaler/pkg/common/functions"
@@ -96,7 +96,7 @@ func eventFilter(event watch.Event, config *rest.Config) {
 		}
 	case "DELETED":
 		if cloudType == "OpenStack" {
-			handelnodedelete.DeleteEventAnalyzer(EventList, config)
+			handlenodedelete.DeleteEventAnalyzer(EventList, config)
 		} else {
 			deleteEventAnalyzer(EventList, openstackinit.ProjectName, openstackinit.ClientSecret, openstackinit.ClientID, openstackinit.AWSRegion, openstackinit.AuthFile)
 		}

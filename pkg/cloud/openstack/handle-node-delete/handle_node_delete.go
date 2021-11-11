@@ -1,4 +1,4 @@
-package handelnodedelete
+package handlenodedelete
 
 import (
 	"context"
