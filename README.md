@@ -9,7 +9,8 @@
 ### Build docker image
 - compile: `CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o bin/autoscaler cmd/main.go`
 - build docker image: `docker build -t autoscaler -f dockerfiles/scratch/Dockerfile .`
-- run docker : `docker run -it --mount type=bind,source="$(pwd)"/conf.yml,target=/conf.yml --mount type=bind,source=<path to /.kube/config>,target=/.kube/config --network=host autoscaler`
+  - test image : `docker run -it --mount type=bind,source="$(pwd)"/conf.yml,target=/conf.yml --mount type=bind,source=<path to /.kube/config>,target=/.kube/config --network=host autoscaler`
+- push docker image to registry
 
 ### Building from source
 Build Kubernetes Cluster Autoscaler from the source
