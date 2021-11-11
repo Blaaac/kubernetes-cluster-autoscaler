@@ -6,6 +6,11 @@
 - [Kubernetes](https://kubernetes.io/) version 1.19.x
 - [Go](https://golang.org/doc/install) version 1.15.x (to build the source and develop plugins)
 
+### Build docker image
+- compile: `CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o bin/autoscaler cmd/main.go`
+- build docker image: `docker build -t autoscaler -f dockerfiles/scratch/Dockerfile .`
+- run docker : `docker run -it --mount type=bind,source="$(pwd)"/conf.yml,target=/conf.yml --mount type=bind,source=<path to /.kube/config>,target=/.kube/config --network=host autoscaler`
+
 ### Building from source
 Build Kubernetes Cluster Autoscaler from the source
 ```

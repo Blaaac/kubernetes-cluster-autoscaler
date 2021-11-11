@@ -1,4 +1,4 @@
-FROM golang:1.15
+FROM golang:1.17
 
 WORKDIR /root
 RUN \
@@ -7,7 +7,7 @@ RUN \
   go build -o autoscaler  cmd/main.go
 
 
-FROM golang:1.15
+FROM golang:1.17
 WORKDIR /go/bin
 COPY --from=0 /root/kubernetes-cluster-autoscaler/autoscaler .
 CMD ["./autoscaler"]
