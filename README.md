@@ -4,13 +4,20 @@
 
 ### Developer Requirements
 - [Kubernetes](https://kubernetes.io/) version 1.19.x
-- [Go](https://golang.org/doc/install) version 1.15.x (to build the source and develop plugins)
+- [Go](https://golang.org/doc/install) version 1.17.x (to build the source and develop plugins)
+
+### Environment requirements
+- k3s cluster, running on openstack cloud
 
 ### Build docker image
 - compile: `CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o bin/autoscaler cmd/main.go`
 - build docker image: `docker build -t autoscaler -f dockerfiles/scratch/Dockerfile .`
   - test image : `docker run -it --mount type=bind,source="$(pwd)"/conf.yml,target=/conf.yml --mount type=bind,source=<path to /.kube/config>,target=/.kube/config --network=host autoscaler`
 - push docker image to registry
+
+### Run in cluster
+- edit deployment/configmap.yml with cluster and cloud pa
+
 
 ### Building from source
 Build Kubernetes Cluster Autoscaler from the source
