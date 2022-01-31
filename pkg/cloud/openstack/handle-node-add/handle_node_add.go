@@ -172,29 +172,20 @@ runcmd:
 - export K3S_URL=%s
 - curl -sfL https://get.k3s.io | sh -
 `
-
+	key:="mykey"
 
 	userData = fmt.Sprintf(userData, openstackinit.K3s_token, openstackinit.K3s_url)
 
-	// serverCreatOpts := servers.CreateOpts{
-	// 	Name:           GetNodeName(),
-	// 	FlavorRef:     flavorID,
-	// 	ImageRef:      imageID,
-	// 	SecurityGroups: []string{openstackinit.SecurityGroupName},
-	// 	Networks:       []servers.Network{{UUID: openstackinit.NetworkUUID}},
-	// }
-	// log.Printf("%s",userData)
-	// log.Printf("%s",[]byte(userData))
 	server, err := servers.Create(client, keypairs.CreateOptsExt{
-		CreateOptsBuilder: servers.CreateOpts{
-			Name:           GetNodeName(),
-			FlavorRef:     flavorID,
-			ImageRef:      imageID,
-			SecurityGroups: []string{openstackinit.SecurityGroupName},
-			Networks:       []servers.Network{{UUID: openstackinit.NetworkUUID}},
-			UserData: []byte(userData),
-		},
-		KeyName: "mykey"},
+			CreateOptsBuilder: servers.CreateOpts{
+				Name:           GetNodeName(),
+				FlavorRef:     flavorID,
+				ImageRef:      imageID,
+				SecurityGroups: []string{openstackinit.SecurityGroupName},
+				Networks:       []servers.Network{{UUID: openstackinit.NetworkUUID}},
+				UserData: []byte(userData),
+			},
+		KeyName: key},
 		).Extract()
 	if err != nil {
 		panic(err)
